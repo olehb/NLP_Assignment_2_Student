@@ -61,12 +61,16 @@ def naiveSoftmaxLossAndGradient(
 
     ### YOUR CODE HERE
 
-    nom = np.exp(outsideVectors[outsideWordIdx].dot(centerWordVec))
-    # print("Nominator: {}".format(n))
-    denom = np.sum(np.exp(outsideVectors.dot(centerWordVec)))
-    # print("Denom: {}".format(d))
-    p = nom / denom
-    loss = -np.log(p)
+    def p(u_o, v_c):
+        nom = np.exp(u_o.dot(v_c))
+        # print("Nominator: {}".format(n))
+        denom = np.sum(np.exp(outsideVectors.dot(v_c)))
+        # print("Denom: {}".format(d))
+        return nom / denom
+
+    loss = -np.log(p(outsideVectors[outsideWordIdx], centerWordVec))
+
+    
 
 
 
