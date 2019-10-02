@@ -77,6 +77,8 @@ def naiveSoftmaxLossAndGradient(
     pOutsideVectors = np.apply_along_axis(p, 1, outsideVectors)
     gradCenterVec = -(outsideVectors[outsideWordIdx] - pOutsideVectors.dot(outsideVectors))
 
+    gradOutsideVecs = centerWordVec[np.newaxis] * pOutsideVectors[:, np.newaxis]
+    gradOutsideVecs[outsideWordIdx] = centerWordVec * (pOutsideVectors[outsideWordIdx] - 1)  # w = o case
 
     ### END YOUR CODE
 
