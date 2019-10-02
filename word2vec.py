@@ -56,13 +56,20 @@ def naiveSoftmaxLossAndGradient(
      we usually use column vector convention (i.e., vectors are in column form) for vectors in matrix U and V (in the handout)
      but for ease of implementation/programming we usually use row vectors (representing vectors in row form).
     """
+    gradCenterVec = 0
+    gradOutsideVecs = 0
 
     ### YOUR CODE HERE
 
-    n = np.exp(outsideVectors[outsideWordIdx].T * centerWordVec)
-    d = np.sum(np.exp(u_w.T * centerWordVec) for u_w in outsideVectors)
-    P = n / d
-    loss = -np.log(P)
+    nom = np.exp(outsideVectors[outsideWordIdx].dot(centerWordVec))
+    # print("Nominator: {}".format(n))
+    denom = np.sum(np.exp(outsideVectors.dot(centerWordVec)))
+    # print("Denom: {}".format(d))
+    p = nom / denom
+    loss = -np.log(p)
+
+
+
 
     ### END YOUR CODE
 
