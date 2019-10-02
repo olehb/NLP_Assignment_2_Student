@@ -70,9 +70,7 @@ def naiveSoftmaxLossAndGradient(
 
     loss = -np.log(p(outsideVectors[outsideWordIdx], centerWordVec))
 
-    
-
-
+    gradCenterVec = -(outsideVectors[outsideWordIdx] - np.sum(p(u_x, centerWordVec) * u_x for u_x in outsideVectors))
 
 
     ### END YOUR CODE
