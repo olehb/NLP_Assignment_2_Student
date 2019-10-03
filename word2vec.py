@@ -56,7 +56,6 @@ def naiveSoftmaxLossAndGradient(
      we usually use column vector convention (i.e., vectors are in column form) for vectors in matrix U and V (in the handout)
      but for ease of implementation/programming we usually use row vectors (representing vectors in row form).
     """
-    gradOutsideVecs = 0
 
     ### YOUR CODE HERE
 
@@ -169,6 +168,19 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
     ### YOUR CODE HERE
+    centerWordIdx = word2Ind[currentCenterWord]
+    centerWordVec = centerWordVectors[centerWordIdx]
+    for outsideWord in outsideWords:
+        outsideWordIdx = word2Ind[outsideWord]
+        lossCurrent, gradCenterVecCurrent, gradOutsideVecsCurrent = word2vecLossAndGradient(centerWordVec,
+                                                                                            outsideWordIdx,
+                                                                                            outsideVectors,
+                                                                                            dataset)
+
+        loss += lossCurrent
+        gradCenterVecs[centerWordIdx] += gradCenterVecCurrent
+        gradOutsideVectors += gradOutsideVecsCurrent
+
     ### END YOUR CODE
 
     return loss, gradCenterVecs, gradOutsideVectors
@@ -246,10 +258,10 @@ def test_word2vec():
     """ Test the two word2vec implementations, before running on Stanford Sentiment Treebank """
     dataset, dummy_vectors, dummy_tokens = dummy()
 
-    print("==== Gradient check for skip-gram with naiveSoftmaxLossAndGradient ====")
+    print("==== Gradient check for skip-gram with negSamplingLossAndGradient ====")
     gradcheck_naive(lambda vec: word2vec_sgd_wrapper(
         skipgram, dummy_tokens, vec, dataset, 5, negSamplingLossAndGradient),
-                    dummy_vectors, "naiveSoftmaxLossAndGradient Gradient")
+                    dummy_vectors, "negSamplingLossAndGradient Gradient")
 
     print("\n\n\t\t\tSkip-Gram with naiveSoftmaxLossAndGradient\t\t\t")
 
